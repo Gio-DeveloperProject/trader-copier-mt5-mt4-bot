@@ -1,5 +1,5 @@
 {
-    "lot_ratio": 0.25,
+    "lot_ratio": 0.125,
     "inverse_trades": true,
     "slave_sl": 150,
     "slave_tp": 250,
