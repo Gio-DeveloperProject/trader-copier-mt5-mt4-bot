@@ -65,6 +65,26 @@ def format_account(acc, titolo, connected):
         f"💰 : {acc.get('balance', 0)}\n"
     )
 
+# === FORMAT SALDO ===
+def format_saldo(master, m_conn, slave, s_conn):
+    # Questi dati puoi spostarli in config.json se vuoi parametrizzarli
+    user_name = "Federico Carmine"
+    challenge = "50k"
+
+    text = "💰 *Saldo Account*\n\n"
+    text += f"👤 *Utente*: {user_name}\n"
+    text += f"🎯 *Challenge*: {challenge}\n\n"
+
+    text += "*PROP ACCOUNT*\n"
+    text += f"▫️ Stato: {'✅ Connesso' if m_conn else '❌ Disconnesso'}\n"
+    text += f"▫️ Bilancio: ${master.get('balance','?')}\n\n"
+
+    text += "*BROKER ACCOUNT*\n"
+    text += f"▫️ Stato: {'✅ Connesso' if s_conn else '❌ Disconnesso'}\n"
+    text += f"▫️ Bilancio: €{slave.get('balance','?')}\n"
+
+    return text
+
 # === POSIZIONI ===
 def format_current_positions(positions, master_acc=None, slave_acc=None):
     if not positions:
@@ -105,7 +125,6 @@ def format_current_positions(positions, master_acc=None, slave_acc=None):
                 f"    Ticket: {p.get('ticket')} | PosID: {p.get('position_id','?')}\n\n"
             )
     return text
-
 
 def format_history_positions(positions, master_acc=None, slave_acc=None):
     if not positions:
@@ -261,9 +280,7 @@ def callback_query(call):
     elif call.data == "saldo":
         master, m_conn = get_status(MASTER_FILE)
         slave, s_conn = get_status(SLAVE_FILE)
-        text = "💰 *Saldo Corrente*\n"
-        text += f"MT5 Master: {master.get('balance', '?')} ({'✅' if m_conn else '❌'})\n"
-        text += f"MT4 Slave: {slave.get('balance', '?')} ({'✅' if s_conn else '❌'})\n"
+        text = format_saldo(master, m_conn, slave, s_conn)
         bot.edit_message_text(text, call.message.chat.id, call.message.message_id,
                               parse_mode="Markdown", reply_markup=back_menu())
 
