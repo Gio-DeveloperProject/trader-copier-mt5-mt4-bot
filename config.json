@@ -1,0 +1,10 @@
+{
+    "lot_ratio": 0.25,
+    "inverse_trades": true,
+    "slave_sl": 150,
+    "slave_tp": 250,
+    "master_update_sl_tp": true,
+    "telegram_token": "8499919974:AAFKuhp4KUD2flu0HIZQr6SWdE08DHpLlvs",
+    "telegram_chat_id": "6903438111"
+  }
+  
