@@ -6,6 +6,9 @@ CONFIG = json.load(open("config.json"))
 bot = telebot.TeleBot(CONFIG["telegram_token"])
 CHAT_ID = CONFIG["telegram_chat_id"]
 
+USER_NAME = CONFIG.get("user_name", "Utente")
+CHALLENGE = CONFIG.get("challenge", "?")
+
 # Cartella comune MetaTrader
 SIGNALS_PATH = os.path.expanduser(
     "~/AppData/Roaming/MetaQuotes/Terminal/Common/Files/"
@@ -67,13 +70,14 @@ def format_account(acc, titolo, connected):
 
 # === FORMAT SALDO ===
 def format_saldo(master, m_conn, slave, s_conn):
-    # Questi dati puoi spostarli in config.json se vuoi parametrizzarli
-    user_name = "Federico Carmine"
-    challenge = "50k"
-
     text = "💰 *Saldo Account*\n\n"
-    text += f"👤 *Utente*: {user_name}\n"
-    text += f"🎯 *Challenge*: {challenge}\n\n"
+    text += f"👤 *Utente*: {USER_NAME}\n"
+    text += f"🎯 *Challenge*: {CHALLENGE}\n\n"
+
+    if master is None: 
+        master = {}
+    if slave is None: 
+        slave = {}
 
     text += "*PROP ACCOUNT*\n"
     text += f"▫️ Stato: {'✅ Connesso' if m_conn else '❌ Disconnesso'}\n"
@@ -84,6 +88,8 @@ def format_saldo(master, m_conn, slave, s_conn):
     text += f"▫️ Bilancio: €{slave.get('balance','?')}\n"
 
     return text
+
+
 
 # === POSIZIONI ===
 def format_current_positions(positions, master_acc=None, slave_acc=None):

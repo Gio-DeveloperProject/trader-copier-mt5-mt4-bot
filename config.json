@@ -5,6 +5,8 @@
     "slave_tp": 250,
     "master_update_sl_tp": true,
     "telegram_token": "8499919974:AAFKuhp4KUD2flu0HIZQr6SWdE08DHpLlvs",
-    "telegram_chat_id": "6903438111"
+    "telegram_chat_id": "6903438111",
+    "user_name": "Federico Carmine",
+    "challenge": "50k"
   }
   
