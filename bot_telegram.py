@@ -31,7 +31,7 @@ def load_json(path):
     except:
         return {}
 
-def is_recent(path, max_age=60):
+def is_recent(path, max_age=180):  # 🔹 portato a 180 secondi
     if not os.path.exists(path):
         return False
     mtime = os.path.getmtime(path)
@@ -42,7 +42,7 @@ def get_status(path):
     if not acc:
         return None, None
     connected = acc.get("connected", False)
-    if not is_recent(path, 60):
+    if not is_recent(path, 180):  # 🔹 usa timeout più ampio
         connected = False
     return acc, connected
 
@@ -88,8 +88,6 @@ def format_saldo(master, m_conn, slave, s_conn):
     text += f"▫️ Bilancio: €{slave.get('balance','?')}\n"
 
     return text
-
-
 
 # === POSIZIONI ===
 def format_current_positions(positions, master_acc=None, slave_acc=None):
@@ -198,6 +196,11 @@ def monitor():
             last_status["master"] = m_conn
 
         slave, s_conn = get_status(SLAVE_FILE)
+
+        # 🔹 debug: mostra ultima modifica file slave
+        if os.path.exists(SLAVE_FILE):
+            print("[DEBUG] Slave last update:", time.ctime(os.path.getmtime(SLAVE_FILE)))
+
         if s_conn != last_status["slave"]:
             msg = bot.send_message(CHAT_ID, "✅ Slave (MT4) CONNESSO" if s_conn else "❌ Slave (MT4) DISCONNESSO")
             auto_delete(CHAT_ID, msg.message_id)
